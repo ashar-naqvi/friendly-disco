@@ -1,0 +1,75 @@
+program FindRemovedItem;
+
+{$APPTYPE CONSOLE}
+
+uses
+  SysUtils;
+
+var
+ numbers,shufflenumbers,newnumbers: array of integer;
+ n,i,j,quantity,count,missingno: integer;
+ found: boolean;
+
+procedure GenerateRandomNumbers(n: integer);
+ var
+  i: integer;
+ begin
+    for i := 1 to n do
+      numbers[i] := 1 + Random(100);       {between 1 and 100}
+ end;
+
+procedure ShuffleAndRemove;
+ var
+  rand: integer;
+ begin
+  for i := 1 to n do
+   begin
+      rand := (1 + Random(n));
+      while shufflenumbers[rand] <> 0 do
+        begin
+          newnumbers[i] := shufflenumbers[rand];
+          shufflenumbers[rand] := 0;
+        end;
+   end;
+ end;
+
+begin
+ writeln('Please enter the amount of numbers you would like in the list:');
+ readln(n);
+ SetLength(numbers, n);
+ SetLength(shufflenumbers, n);
+ SetLength(newnumbers, n-1);
+ for i := 1 to n-1 do
+   newnumbers[i] := 0;
+ GenerateRandomNumbers(n);
+ writeln('The numbers in the list are: ');
+ for i := 1 to n do
+  write(numbers[i], ' ');
+ for i := 1 to n do
+   shufflenumbers[i] := numbers[i];
+ ShuffleAndRemove;
+ writeln('List shuffled and and one item removed');
+ for i := 1 to n do
+  write(newnumbers[i], ' ');
+ readln;
+ count := 0;
+ found := false;
+ for i := 1 to n do
+  begin
+    for j := 1 to (n-1) do
+      begin
+        if numbers[i] = newnumbers[j] then
+          count := count + 1;
+        if count = 0 then
+          begin
+            missingno := i;
+            found := true;
+          end
+        else count := 0;
+      end;
+    if found then
+  end;
+ writeln('The number removed from your list was: ', numbers[missingno], '.');
+ readln;
+end.
+
