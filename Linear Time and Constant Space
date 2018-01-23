@@ -1,0 +1,64 @@
+program FindRemovedItem;
+
+{$APPTYPE CONSOLE}
+
+uses
+  SysUtils;
+
+var
+ numbers,shufflenumbers,newnumbers: array of integer;
+ n,i,missingno,oldsum,newsum: integer;
+
+procedure GenerateRandomNumbers(n: integer);
+ var
+  i: integer;
+ begin
+    for i := 1 to n do
+      numbers[i] := 1 + Random(100);       {between 1 and 100}
+ end;
+
+procedure ShuffleAndRemove;
+ var
+  rand: integer;
+ begin
+  for i := 1 to n do
+   begin
+      rand := (1 + Random(n));
+      while shufflenumbers[rand] <> 0 do
+        begin
+          newnumbers[i] := shufflenumbers[rand];
+          shufflenumbers[rand] := 0;
+        end;
+   end;
+ end;
+
+begin
+ writeln('Please enter the amount of numbers you would like in the list:');
+ readln(n);
+ SetLength(numbers, n);
+ SetLength(shufflenumbers, n);
+ SetLength(newnumbers, n-1);
+ for i := 1 to n-1 do
+   newnumbers[i] := 0;
+ GenerateRandomNumbers(n);
+ writeln('The numbers in the list are: ');
+ for i := 1 to n do
+  write(numbers[i], ' ');
+ for i := 1 to n do
+   shufflenumbers[i] := numbers[i];
+ ShuffleAndRemove;
+ writeln('List shuffled and and one item removed');
+ for i := 1 to n do
+  writeln(newnumbers[i]);
+ readln;
+ oldsum := 0;
+ for i := 1 to n do
+  oldsum := oldsum + numbers[i];
+ newsum := 0;
+ for i := 1 to n do
+  newsum := newsum + newnumbers[i];
+ missingno := (oldsum - newsum);
+ writeln('The missing number was:', missingno, '.');
+ readln;
+end.
+
